@@ -1,0 +1,330 @@
+﻿
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BCN_WK_00_NorthwindModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="BCN_WK_00_NorthwindModelStoreContainer">
+    <EntitySet Name="Customers" EntityType="BCN_WK_00_NorthwindModel.Store.Customers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="OrderDetails" EntityType="BCN_WK_00_NorthwindModel.Store.OrderDetails" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Orders" EntityType="BCN_WK_00_NorthwindModel.Store.Orders" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Products" EntityType="BCN_WK_00_NorthwindModel.Store.Products" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Lookups" EntityType="BCN_WK_00_NorthwindModel.Store.Lookups" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Orders_Customers" Association="BCN_WK_00_NorthwindModel.Store.FK_Orders_Customers">
+      <End Role="Customer" EntitySet="Customers" />
+      <End Role="Order" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetails_Orders" Association="BCN_WK_00_NorthwindModel.Store.FK_OrderDetails_Orders">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetails_Products" Association="BCN_WK_00_NorthwindModel.Store.FK_OrderDetails_Products">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Customers">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Address" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="PostalCode" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="City" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="Country" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="Telephone" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" Nullable="true" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="OrderDetails">
+    <Key>
+      <PropertyRef Name="OrderId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="OrderId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ProductId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UnitPrice" Type="decimal" Nullable="true" Precision="18" Scale="2" />
+    <Property Name="Quantity" Type="decimal" Nullable="true" Precision="18" Scale="4" />
+    <Property Name="Discount" Type="decimal" Nullable="true" Precision="18" Scale="4" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="CustomerId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="OrderDate" Type="datetime" Nullable="false" />
+    <Property Name="ShippedDate" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar" Nullable="true" MaxLength="50" />
+    <Property Name="UnitPrice" Type="decimal" Nullable="true" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="Lookups">
+    <Key>
+      <PropertyRef Name="LookupId" />
+    </Key>
+    <Property Name="LookupId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" Nullable="true" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_Orders_Customers">
+    <End Role="Customer" Type="BCN_WK_00_NorthwindModel.Store.Customers" Multiplicity="1" />
+    <End Role="Order" Type="BCN_WK_00_NorthwindModel.Store.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetails_Orders">
+    <End Role="Order" Type="BCN_WK_00_NorthwindModel.Store.Orders" Multiplicity="1" />
+    <End Role="OrderDetail" Type="BCN_WK_00_NorthwindModel.Store.OrderDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetails_Products">
+    <End Role="Product" Type="BCN_WK_00_NorthwindModel.Store.Products" Multiplicity="1" />
+    <End Role="OrderDetail" Type="BCN_WK_00_NorthwindModel.Store.OrderDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DataExtensibilityModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="DataExtensibilityContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="DataExtensibilityModel.Customer" />
+          <EntitySet Name="OrderDetails" EntityType="DataExtensibilityModel.OrderDetail" />
+          <EntitySet Name="Orders" EntityType="DataExtensibilityModel.Order" />
+          <EntitySet Name="Products" EntityType="DataExtensibilityModel.Product" />
+          <AssociationSet Name="FK_Orders_Customers" Association="DataExtensibilityModel.FK_Orders_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Orders" Association="DataExtensibilityModel.FK_OrderDetails_Orders">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_Products" Association="DataExtensibilityModel.FK_OrderDetails_Products">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <EntitySet Name="Lookups" EntityType="DataExtensibilityModel.Lookup" />
+        </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Type="Guid" Name="CustomerId" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Address" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PostalCode" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="City" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Country" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Telephone" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Email" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="DataExtensibilityModel.FK_Orders_Customers" FromRole="Customer" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderId" />
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Type="Guid" Name="OrderId" Nullable="false" />
+          <Property Type="Guid" Name="ProductId" Nullable="false" />
+          <Property Type="Decimal" Name="UnitPrice" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Quantity" Precision="18" Scale="4" />
+          <Property Type="Decimal" Name="Discount" Precision="18" Scale="4" />
+          <NavigationProperty Name="Order" Relationship="DataExtensibilityModel.FK_OrderDetails_Orders" FromRole="OrderDetail" ToRole="Order" />
+          <NavigationProperty Name="Product" Relationship="DataExtensibilityModel.FK_OrderDetails_Products" FromRole="OrderDetail" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Type="Guid" Name="OrderId" Nullable="false" />
+          <Property Type="Guid" Name="CustomerId" Nullable="false" />
+          <Property Type="DateTime" Name="OrderDate" Nullable="false" />
+          <Property Type="DateTime" Name="ShippedDate" />
+          <NavigationProperty Name="Customer" Relationship="DataExtensibilityModel.FK_Orders_Customers" FromRole="Order" ToRole="Customer" />
+          <NavigationProperty Name="OrderDetails" Relationship="DataExtensibilityModel.FK_OrderDetails_Orders" FromRole="Order" ToRole="OrderDetail" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Type="Guid" Name="ProductId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="UnitPrice" Precision="18" Scale="2" />
+          <NavigationProperty Name="OrderDetails" Relationship="DataExtensibilityModel.FK_OrderDetails_Products" FromRole="Product" ToRole="OrderDetail" />
+        </EntityType>
+        <Association Name="FK_Orders_Customers">
+          <End Type="DataExtensibilityModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="DataExtensibilityModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Orders">
+          <End Type="DataExtensibilityModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="DataExtensibilityModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_Products">
+          <End Type="DataExtensibilityModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="DataExtensibilityModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Lookup">
+          <Key>
+            <PropertyRef Name="LookupId" />
+          </Key>
+          <Property Type="Guid" Name="LookupId" Nullable="false" />
+          <Property Type="String" Name="Description" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BCN_WK_00_NorthwindModelStoreContainer" CdmEntityContainer="DataExtensibilityContext">
+    <EntitySetMapping Name="Customers">
+      <EntityTypeMapping TypeName="IsTypeOf(DataExtensibilityModel.Customer)">
+        <MappingFragment StoreEntitySet="Customers">
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderDetails">
+      <EntityTypeMapping TypeName="IsTypeOf(DataExtensibilityModel.OrderDetail)">
+        <MappingFragment StoreEntitySet="OrderDetails">
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orders">
+      <EntityTypeMapping TypeName="IsTypeOf(DataExtensibilityModel.Order)">
+        <MappingFragment StoreEntitySet="Orders">
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+          <ScalarProperty Name="ShippedDate" ColumnName="ShippedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Products">
+      <EntityTypeMapping TypeName="IsTypeOf(DataExtensibilityModel.Product)">
+        <MappingFragment StoreEntitySet="Products">
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Lookups">
+      <EntityTypeMapping TypeName="IsTypeOf(DataExtensibilityModel.Lookup)">
+        <MappingFragment StoreEntitySet="Lookups">
+          <ScalarProperty Name="LookupId" ColumnName="LookupId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="NorthwindModel" ZoomLevel="64">
+        <EntityTypeShape EntityType="DataExtensibilityModel.Customer" Width="1.5" PointX="0.75" PointY="1" Height="2.9417936197916674" />
+        <EntityTypeShape EntityType="DataExtensibilityModel.OrderDetail" Width="1.5" PointX="5.25" PointY="1.25" Height="2.3648893229166674" />
+        <EntityTypeShape EntityType="DataExtensibilityModel.Order" Width="1.5" PointX="3" PointY="1.375" Height="2.172587890624996" />
+        <EntityTypeShape EntityType="DataExtensibilityModel.Product" Width="1.5" PointX="3" PointY="5.5" Height="1.9802864583333388" />
+        <AssociationConnector Association="DataExtensibilityModel.FK_Orders_Customers">
+          <ConnectorPoint PointX="2.25" PointY="2.461293945312498" />
+          <ConnectorPoint PointX="3" PointY="2.461293945312498" />
+        </AssociationConnector>
+        <AssociationConnector Association="DataExtensibilityModel.FK_OrderDetails_Orders">
+          <ConnectorPoint PointX="4.5" PointY="2.461293945312498" />
+          <ConnectorPoint PointX="5.25" PointY="2.461293945312498" />
+        </AssociationConnector>
+        <AssociationConnector Association="DataExtensibilityModel.FK_OrderDetails_Products">
+          <ConnectorPoint PointX="4.5" PointY="6.4901432291666694" />
+          <ConnectorPoint PointX="6" PointY="6.4901432291666694" />
+          <ConnectorPoint PointX="6" PointY="3.6148893229166674" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="DataExtensibilityModel.Lookup" Width="1.5" PointX="8.125" PointY="1.25" Height="1.4033821614583317" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
