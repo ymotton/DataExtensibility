@@ -10,13 +10,14 @@ SET NUMERIC_ROUNDABORT OFF;
 
 GO
 :setvar DatabaseName "DataExtensibility"
-:setvar DefaultDataPath "C:\Program Files\Microsoft SQL Server\MSSQL10.SQLEXPRESS\MSSQL\DATA\"
-:setvar DefaultLogPath "C:\Program Files\Microsoft SQL Server\MSSQL10.SQLEXPRESS\MSSQL\DATA\"
+:setvar DefaultDataPath "c:\Program Files\Microsoft SQL Server\MSSQL10.SQLEXPRESS\MSSQL\DATA\"
+:setvar DefaultLogPath "c:\Program Files\Microsoft SQL Server\MSSQL10.SQLEXPRESS\MSSQL\DATA\"
+
+GO
+USE [master]
 
 GO
 :on error exit
-GO
-USE [master]
 GO
 IF (DB_ID(N'$(DatabaseName)') IS NOT NULL
     AND DATABASEPROPERTYEX(N'$(DatabaseName)','Status') <> N'ONLINE')
@@ -29,15 +30,15 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM [master].[dbo].[sysdatabases] WHERE [name] = N'$(DatabaseName)')
 BEGIN
-    RAISERROR(N'You cannot deploy this update script to target QUADVERTEX\SQLEXPRESS. The database for which this script was built, DataExtensibility, does not exist on this server.', 16, 127) WITH NOWAIT
+    RAISERROR(N'You cannot deploy this update script to target MC-JXB5RM1\SQLEXPRESS. The database for which this script was built, DataExtensibility, does not exist on this server.', 16, 127) WITH NOWAIT
     RETURN
 END
 
 GO
 
-IF (@@servername != 'QUADVERTEX\SQLEXPRESS')
+IF (@@servername != 'MC-JXB5RM1\SQLEXPRESS')
 BEGIN
-    RAISERROR(N'The server name in the build script %s does not match the name of the target server %s. Verify whether your database project settings are correct and whether your build script is up to date.', 16, 127,N'QUADVERTEX\SQLEXPRESS',@@servername) WITH NOWAIT
+    RAISERROR(N'The server name in the build script %s does not match the name of the target server %s. Verify whether your database project settings are correct and whether your build script is up to date.', 16, 127,N'MC-JXB5RM1\SQLEXPRESS',@@servername) WITH NOWAIT
     RETURN
 END
 
@@ -51,6 +52,7 @@ END
 
 GO
 USE [$(DatabaseName)]
+
 GO
 /*
  Pre-Deployment Script Template							
@@ -77,22 +79,23 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 
-DELETE FROM Customers;
+IF NOT EXISTS (SELECT TOP 1 * FROM Customers)
+BEGIN
+	INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PostalCode, City, Country)
+	VALUES ('c493a891-fb3d-4c44-abea-62d1c2e4aa7d', 'Patsy D.', 'Thomas', '3784 Cantebury Drive', 'NY 10036', 'New York', 'United States');
 
-INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PostalCode, City, Country)
-VALUES ('c493a891-fb3d-4c44-abea-62d1c2e4aa7d', 'Patsy D.', 'Thomas', '3784 Cantebury Drive', 'NY 10036', 'New York', 'United States');
+	INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PostalCode, City, Country)
+	VALUES ('5c402b16-e4e9-4a5c-9c87-d8d8b64eedbb', 'Stacey T.', 'Vogelsang', '1509 Williams Lane', 'KS 67202', 'Wichita', 'United States');
 
-INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PostalCode, City, Country)
-VALUES ('5c402b16-e4e9-4a5c-9c87-d8d8b64eedbb', 'Stacey T.', 'Vogelsang', '1509 Williams Lane', 'KS 67202', 'Wichita', 'United States');
+	INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PostalCode, City, Country)
+	VALUES ('4618c0a3-d547-403d-b7a4-af56b0c66e87', 'Larry A.', 'Wagner', '3355 Friendship Lane', 'CA 94104', 'San Francisco', 'United States');
 
-INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PostalCode, City, Country)
-VALUES ('4618c0a3-d547-403d-b7a4-af56b0c66e87', 'Larry A.', 'Wagner', '3355 Friendship Lane', 'CA 94104', 'San Francisco', 'United States');
+	INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PostalCode, City, Country)
+	VALUES ('3dd5ea86-7f75-4f14-87ba-9ac30a7b3ea1', 'Dennis T.', 'Miller', '4558 Ryder Avenue', 'WA 98208', 'Everett', 'United States');
 
-INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PostalCode, City, Country)
-VALUES ('3dd5ea86-7f75-4f14-87ba-9ac30a7b3ea1', 'Dennis T.', 'Miller', '4558 Ryder Avenue', 'WA 98208', 'Everett', 'United States');
-
-INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PostalCode, City, Country)
-VALUES ('cfcb0c2a-5467-4a97-8748-00222e927e74', 'Karen G.', 'Pina', '3637 West Drive', 'IL 60457', 'Hickory Hills', 'United States');
-
+	INSERT INTO Customers (CustomerId, FirstName, LastName, Address, PostalCode, City, Country)
+	VALUES ('cfcb0c2a-5467-4a97-8748-00222e927e74', 'Karen G.', 'Pina', '3637 West Drive', 'IL 60457', 'Hickory Hills', 'United States');
+END
+GO
 
 GO
